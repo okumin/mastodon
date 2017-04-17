@@ -187,6 +187,8 @@ Rails.application.routes.draw do
   get '/about/more', to: 'about#more'
   get '/terms',      to: 'about#terms'
 
+  get '/healthz',    to: 'healthz#check'
+
   root 'home#index'
 
   match '*unmatched_route',
