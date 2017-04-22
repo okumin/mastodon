@@ -37,5 +37,8 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
  && rm -rf /tmp/* /var/cache/apk/*
 
 COPY . /mastodon
+COPY ./crontab /etc/crontabs/root
 
-VOLUME /mastodon/public/system /mastodon/public/assets
+RUN SECRET_KEY_BASE=mastodon RAILS_ENV=production bundle exec rails assets:precompile
+
+VOLUME /mastodon/public/system

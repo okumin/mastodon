@@ -134,7 +134,7 @@ if (cluster.isMaster) {
   }
 
   const authenticationMiddleware = (req, res, next) => {
-    if (req.method === 'OPTIONS') {
+    if (req.method === 'OPTIONS' || req.path === '/healthz') {
       next()
       return
     }
@@ -271,6 +271,10 @@ if (cluster.isMaster) {
   app.use(allowCrossDomain)
   app.use(authenticationMiddleware)
   app.use(errorMiddleware)
+
+  app.get('/healthz', (req, res) => {
+    res.send('ok');
+  })
 
   app.get('/api/v1/streaming/user', (req, res) => {
     streamFrom(`timeline:${req.accountId}`, req, streamToHttp(req, res), streamHttpEnd(req))

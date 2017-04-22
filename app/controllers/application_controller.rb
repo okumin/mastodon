@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  force_ssl if: "Rails.env.production? && ENV['LOCAL_HTTPS'] == 'true'"
+  force_ssl if: :use_ssl?
 
   include Localized
 
@@ -101,5 +101,9 @@ class ApplicationController < ActionController::Base
     end
 
     raw.map { |item| cached_keys_with_value[item.cache_key] || uncached[item.id] }.compact
+  end
+
+  def use_ssl?
+    Rails.env.production? && ENV['LOCAL_HTTPS'] == 'true'
   end
 end
